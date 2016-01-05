@@ -67,7 +67,7 @@ int main(void)
   CFilter::init();
 
   float gyroBuffer[3];
-  int16_t magBuffer[3];
+//  int16_t magBuffer[3];
 
   char printBuffer[40];
 

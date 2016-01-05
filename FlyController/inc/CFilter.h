@@ -7,19 +7,24 @@
 
 #ifndef CFILTER_H_
 #define CFILTER_H_
+#include <stdint.h>
+#include <stdio.h>
+//#include <cstdint>
 
 class CFilter {
 public:
 
-	typedef struct {
+	 struct sensor_data_t {
 		float x;
 		float y;
 		float z;
-	} sensor_data_t;
+	} ;
 
 	static float filter_get_x(void);
 	static float filter_get_y(void);
 	static float filter_get_z(void);
+
+
 
 	static void init();
 	static void update();
@@ -36,8 +41,10 @@ protected:
 
 	static float dt;
 	static int16_t accBuffer[3];
-	static float gyroBuffer[3];
+	static float  gyroBuffer[3];
 	static int16_t magBuffer[3];
+
+	static void internalUpdate();
 
 
 };

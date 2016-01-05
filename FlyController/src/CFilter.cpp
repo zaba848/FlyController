@@ -5,7 +5,13 @@
  *      Author: User
  */
 
+
 #include <CFilter.h>
+#include <stm32l476g_discovery_compass.h>
+#include "stm32l476g_discovery_gyroscope.h"
+
+
+
 
 CFilter::sensor_data_t CFilter::alfa;
 CFilter::sensor_data_t CFilter::beta;
@@ -16,9 +22,9 @@ CFilter::sensor_data_t CFilter::v_pri;
 CFilter::sensor_data_t CFilter::v_post;
 
 float CFilter::dt;
-float  CFilter::gyroBuffer[] = {0,0,0};
-int16_t CFilter::accBuffer[] = {0,0,0};
-int16_t CFilter::magBuffer[] = {0,0,0};
+float  CFilter::gyroBuffer[] = {0,0,0} ;
+int16_t CFilter::accBuffer[] = {0,0,0} ;
+int16_t CFilter::magBuffer[] = {0,0,0} ;
 
 void CFilter::init()
 {
@@ -50,17 +56,22 @@ void CFilter::init()
 
 
 }
- float CFilter::CFilter_get_x(void) {
+ float CFilter::filter_get_x(void) {
 	return x_post.x;
 }
 
- float CFilter::CFilter_get_y(void) {
+ float CFilter::filter_get_y(void) {
 	return x_post.y;
 }
 
- float CFilter::CFilter_get_z(void) {
+ float CFilter::filter_get_z(void) {
 	return x_post.z;
 }
+
+
+
+
+
 void CFilter::internalUpdate() {
 
 	BSP_COMPASS_AccGetXYZ(accBuffer);
@@ -71,9 +82,9 @@ void CFilter::internalUpdate() {
 
 
 
- void CFilter::update() {
+void CFilter::update() {
 
-
+	 internalUpdate();
 
 	x_pri.x = x_post.x + dt * v_post.x;
 	x_pri.y = x_post.y + dt * v_post.y;
@@ -83,12 +94,12 @@ void CFilter::internalUpdate() {
 	v_pri.y = v_post.y;
 	v_pri.z = v_post.z;
 
-	x_post.x = x_pri.x + alfa.x * (sensor_acc_get_x() - x_pri.x);
-	x_post.y = x_pri.y + alfa.y * (sensor_acc_get_y() - x_pri.y);
-	x_post.z = x_pri.z + alfa.z * (sensor_acc_get_z() - x_pri.z);
-	v_post.x = v_pri.x + beta.x * (sensor_acc_get_x() - x_pri.x) / dt;
-	v_post.y = v_pri.y + beta.y * (sensor_acc_get_y() - x_pri.y) / dt;
-	v_post.z = v_pri.z + beta.z * (sensor_acc_get_z() - x_pri.z) / dt;
+	x_post.x = x_pri.x + alfa.x * (accBuffer[0] - x_pri.x);
+	x_post.y = x_pri.y + alfa.y * (accBuffer[1] - x_pri.y);
+	x_post.z = x_pri.z + alfa.z * (accBuffer[2] - x_pri.z);
+	v_post.x = v_pri.x + beta.x * (accBuffer[0] - x_pri.x) / dt;
+	v_post.y = v_pri.y + beta.y * (accBuffer[1] - x_pri.y) / dt;
+	v_post.z = v_pri.z + beta.z * (accBuffer[2] - x_pri.z) / dt;
 
 }
 
