@@ -35,6 +35,11 @@ protected:
 	static sensor_data_t v_post;
 
 	static float dt;
+	static int16_t accBuffer[3];
+	static float gyroBuffer[3];
+	static int16_t magBuffer[3];
+
+
 };
 
 #endif /* CFILTER_H_ */

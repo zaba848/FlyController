@@ -16,6 +16,9 @@ CFilter::sensor_data_t CFilter::v_pri;
 CFilter::sensor_data_t CFilter::v_post;
 
 float CFilter::dt;
+float  CFilter::gyroBuffer[] = {0,0,0};
+int16_t CFilter::accBuffer[] = {0,0,0};
+int16_t CFilter::magBuffer[] = {0,0,0};
 
 void CFilter::init()
 {
@@ -58,6 +61,15 @@ void CFilter::init()
  float CFilter::CFilter_get_z(void) {
 	return x_post.z;
 }
+void CFilter::internalUpdate() {
+
+	BSP_COMPASS_AccGetXYZ(accBuffer);
+	BSP_COMPASS_MagGetXYZ(magBuffer);
+	BSP_GYRO_GetXYZ(gyroBuffer);
+
+}
+
+
 
  void CFilter::update() {
 
