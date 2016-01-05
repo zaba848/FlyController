@@ -21,6 +21,10 @@ CFilter::sensor_data_t CFilter::x_post;
 CFilter::sensor_data_t CFilter::v_pri;
 CFilter::sensor_data_t CFilter::v_post;
 
+CFilter::sensor_data_t CFilter::x_backupPosition;
+CFilter::sensor_data_t CFilter::x_beforeComputing;
+
+uint8_t CFilter::internalIterator;
 float CFilter::dt;
 float  CFilter::gyroBuffer[] = {0,0,0} ;
 int16_t CFilter::accBuffer[] = {0,0,0} ;
@@ -28,6 +32,7 @@ int16_t CFilter::magBuffer[] = {0,0,0} ;
 
 void CFilter::init()
 {
+	internalIterator = 0;
 	  dt = 0.1;
 
 	 alfa.x = 0.2;
@@ -46,6 +51,14 @@ void CFilter::init()
 	 x_post.y = 0;
 	 x_post.z = 0;
 
+	 x_backupPosition.x = 0;
+	 x_backupPosition.y = 0;
+	 x_backupPosition.z = 0;
+
+	 x_beforeComputing.x = 0;
+	 x_beforeComputing.y = 0;
+	 x_beforeComputing.z = 0;
+
 	 v_pri.x = 0;
 	 v_pri.y = 0;
 	 v_pri.z = 0;
@@ -56,23 +69,35 @@ void CFilter::init()
 
 
 }
- float CFilter::filter_get_x(void) {
-	return x_post.x;
+float CFilter::getAccX(void) {
+	return x_backupPosition.x;
+
 }
 
- float CFilter::filter_get_y(void) {
-	return x_post.y;
+float CFilter::getAccY(void) {
+	return x_backupPosition.y;
 }
 
- float CFilter::filter_get_z(void) {
-	return x_post.z;
+float CFilter::getAccZ(void) {
+	return x_backupPosition.z;
 }
 
+void CFilter::internalComputing()
+{
 
+	x_beforeComputing.x += x_post.x;
+	x_beforeComputing.y += x_post.y;
+	x_beforeComputing.z += x_post.z;
 
+	if(internalIterator >= NUBER_OF_SAMPLES)
+	{
+		x_backupPosition.x = x_beforeComputing.x / NUBER_OF_SAMPLES;
+		x_backupPosition.y = x_beforeComputing.y / NUBER_OF_SAMPLES;
+		x_backupPosition.z = x_beforeComputing.z / NUBER_OF_SAMPLES;
+	}
+}
 
-
-void CFilter::internalUpdate() {
+void CFilter::internalValueUpdate() {
 
 	BSP_COMPASS_AccGetXYZ(accBuffer);
 	BSP_COMPASS_MagGetXYZ(magBuffer);
@@ -80,12 +105,8 @@ void CFilter::internalUpdate() {
 
 }
 
-
-
-void CFilter::update() {
-
-	 internalUpdate();
-
+void CFilter::mainAlgorithm()
+{
 	x_pri.x = x_post.x + dt * v_post.x;
 	x_pri.y = x_post.y + dt * v_post.y;
 	x_pri.z = x_post.z + dt * v_post.z;
@@ -100,6 +121,13 @@ void CFilter::update() {
 	v_post.x = v_pri.x + beta.x * (accBuffer[0] - x_pri.x) / dt;
 	v_post.y = v_pri.y + beta.y * (accBuffer[1] - x_pri.y) / dt;
 	v_post.z = v_pri.z + beta.z * (accBuffer[2] - x_pri.z) / dt;
+}
+
+void CFilter::update() {
+
+	internalValueUpdate();
+	mainAlgorithm();
+	internalComputing();
 
 }
 

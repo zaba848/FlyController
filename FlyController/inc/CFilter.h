@@ -13,6 +13,8 @@
 
 class CFilter {
 public:
+static const uint8_t NUBER_OF_SAMPLES = 10;
+
 
 	 struct sensor_data_t {
 		float x;
@@ -20,9 +22,9 @@ public:
 		float z;
 	} ;
 
-	static float filter_get_x(void);
-	static float filter_get_y(void);
-	static float filter_get_z(void);
+	static float getAccX(void);
+	static float getAccY(void);
+	static float getAccZ(void);
 
 
 
@@ -44,7 +46,16 @@ protected:
 	static float  gyroBuffer[3];
 	static int16_t magBuffer[3];
 
-	static void internalUpdate();
+	static void internalValueUpdate();
+	static void internalComputing();
+	static void mainAlgorithm();
+	static sensor_data_t x_backupPosition;
+
+private:
+
+	static uint8_t internalIterator;
+	static sensor_data_t x_beforeComputing;
+
 
 
 };
