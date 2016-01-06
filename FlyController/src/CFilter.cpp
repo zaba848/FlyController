@@ -23,6 +23,9 @@ CFilter::sensor_data_t CFilter::x_backupPosition;
 CFilter::sensor_data_t CFilter::x_correction;
 
 int16_t CFilter::accBuffer [] = {0,0,0} ;
+int16_t CFilter::angle [] = {0,0,0} ;
+
+int16_t CFilter::compareValue [];
 
 uint8_t CFilter::internalIterator;
 float CFilter::dt;
@@ -30,6 +33,9 @@ float CFilter::dt;
 void CFilter::init()
 {
 	internalIterator = 0;
+	for(uint8_t iterator = 0; iterator < 3*NUBER_OF_SAMPLES; iterator++)
+	compareValue[iterator] = 0;
+
 	  dt = 0.1;
 
 	 alfa.x = 0.2;
@@ -69,12 +75,14 @@ void CFilter::init()
 
 }
 float CFilter::getAccX(void) {
-	return x_post.x;
+//	return x_post.x;
+	return angle[0];
 
 }
 
 float CFilter::getAccY(void) {
-	return x_post.y;
+//	return x_post.y;
+	return angle[1];
 }
 
 float CFilter::getAccZ(void) {
@@ -106,6 +114,7 @@ void CFilter::internalValueUpdate() {
 	accBuffer[2] = CDriver::getACC_Z() - x_correction.z;
 
 
+
 }
 
 void CFilter::mainAlgorithm()
@@ -126,10 +135,24 @@ void CFilter::mainAlgorithm()
 	v_post.z = v_pri.z + beta.z * (accBuffer[2] - x_pri.z) / dt;
 }
 
+void CFilter::getAngle()
+{
+
+// boki
+	angle[0] = atan2( (CDriver::getACC_X() - x_correction.x),(CDriver::getACC_Z() - x_correction.z)) * 180 / PI;
+
+// przod tyl
+	angle[1] = atan2( (CDriver::getACC_Y() - x_correction.y),(CDriver::getACC_Z() - x_correction.z)) * 180 / PI;
+
+
+
+}
+
 void CFilter::update() {
 
-	internalValueUpdate();
-	mainAlgorithm();
+//	internalValueUpdate();
+//	mainAlgorithm();
+	getAngle();
 
 }
 

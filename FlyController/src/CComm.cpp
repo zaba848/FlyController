@@ -21,7 +21,11 @@ void CComm::update()
 	communicationTimer.update();
 	if(communicationTimer.timeUp())
 	{
-		  sprintf(printBuffer,"X %.1f, %d, Y %.1f, %d, Z %.1f, %d\n",CFilter::getAccX()/DIVIDED_BY,CDriver::getACC_X(),CFilter::getAccY()/DIVIDED_BY,CDriver::getACC_Y(),CFilter::getAccZ()/DIVIDED_BY,CDriver::getACC_Z());
-		  send(printBuffer);
+//		  sprintf(printBuffer,"X %.1f, %d, Y %.1f, %d, Z %.1f, %d\n",CFilter::getAccX()/DIVIDED_BY,CDriver::getACC_X(),CFilter::getAccY()/DIVIDED_BY,CDriver::getACC_Y(),CFilter::getAccZ()/DIVIDED_BY,CDriver::getACC_Z());
+//		sprintf(printBuffer,"Przechyl boczny: %.1f*   Przechyl pionowy: %.1f*\n", CFilter::getAccX()/DIVIDED_BY, CFilter::getAccY()/DIVIDED_BY);
+		sprintf(printBuffer,"%.1f* %.1f*\n", CFilter::getAccX()/DIVIDED_BY, CFilter::getAccY()/DIVIDED_BY);
+
+		send(printBuffer);
+
 	}
 }

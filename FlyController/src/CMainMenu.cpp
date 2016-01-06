@@ -20,7 +20,7 @@ void CMainMenu::init()
 	CPeripherials::peripherialInit();
 	CComm::init();
 	timer.reconfigure(1, CTimer::CT_SEC);
-	readTimer.reconfigure(3, CTimer::CT_SEC);
+	readTimer.reconfigure(100, CTimer::CT_MS);
 
 	initComplet();
 
@@ -96,9 +96,7 @@ void CMainMenu::update()
 	  CComm::update();
 
 	  if(readTimer.timeUp())
-	  {
 		  CDriver::update();
-	  }
 		  CFilter::update();
 
 

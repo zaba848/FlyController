@@ -10,11 +10,14 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <CDriver.h>
+#include <cmath>
+
 //#include <cstdint>
 
 class CFilter {
 public:
 static const uint8_t NUBER_OF_SAMPLES = 3;
+static const float PI = 3.1415;
 
 
 	 typedef struct  {
@@ -47,10 +50,14 @@ protected:
 
 	static float dt;
 	static int16_t accBuffer[3];
+	static int16_t angle[3];
+
 
 
 	static void internalValueUpdate();
 	static void mainAlgorithm();
+	static void getAngle();
+
 	static sensor_data_t x_backupPosition;
 
 private:
@@ -58,6 +65,8 @@ private:
 	static uint8_t internalIterator;
 	static sensor_data_t x_correction;
 
+	static int16_t compareValue[3*NUBER_OF_SAMPLES];
+	static void check();
 
 
 };

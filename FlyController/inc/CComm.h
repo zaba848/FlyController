@@ -22,7 +22,7 @@ class CComm {
 public:
 
 	static const uint8_t COMMUNICATION_DELAY = 40;
-	static const uint8_t DIVIDED_BY	= 100;
+	static const uint8_t DIVIDED_BY	= 1;
 
 	static void init();
 	static void update();
