@@ -33,6 +33,12 @@ protected:
 
 	static void SystemClock_Config();
 
+private:
+
+	static void errorControll();
+	static uint8_t gyroErr ;
+	static uint8_t accErr  ;
+
 };
 
 #endif /* CPERIPHERIALS_H_ */

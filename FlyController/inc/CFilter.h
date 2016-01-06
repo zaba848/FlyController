@@ -13,7 +13,7 @@
 
 class CFilter {
 public:
-static const uint8_t NUBER_OF_SAMPLES = 10;
+static const uint8_t NUBER_OF_SAMPLES = 3;
 
 
 	 struct sensor_data_t {
@@ -47,7 +47,6 @@ protected:
 	static int16_t magBuffer[3];
 
 	static void internalValueUpdate();
-	static void internalComputing();
 	static void mainAlgorithm();
 	static sensor_data_t x_backupPosition;
 

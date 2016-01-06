@@ -8,16 +8,35 @@
 #include <CPeripherials.h>
 
 
+uint8_t CPeripherials::gyroErr ;
+uint8_t CPeripherials::accErr  ;
+
 void CPeripherials::peripherialInit() {
+
+	 gyroErr = 0;
+	 accErr  = 0;
 
 	  HAL_Init();
 	  SystemClock_Config();
 	  MX_GPIO_Init();
 	  MX_USART2_UART_Init();
-	  BSP_GYRO_Init();
-	  BSP_COMPASS_Init();
+	  BSP_LED_Init(LED_GREEN);
+	  BSP_LED_Init(LED_RED);
+	  gyroErr = BSP_GYRO_Init();
+	  accErr = BSP_COMPASS_Init();
 	  BSP_LCD_GLASS_Init();
 	  CFilter::init();
+
+	  errorControll();
+
+}
+
+void CPeripherials::errorControll()
+{
+	  if(gyroErr != 0)
+		  BSP_LED_On(LED_GREEN);
+	  if(accErr != 0)
+		  BSP_LED_On(LED_RED);
 }
 
 

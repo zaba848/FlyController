@@ -36,11 +36,12 @@
 #include <CPeripherials.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stm32l476g_discovery_compass.h>
 #include <stm32l476g_discovery_glass_lcd.h>
 #include <stm32l4xx_hal.h>
 #include <usart.h>
 
-void SystemClock_Config(void);
+//void SystemClock_Config(void);
 
 int main(void)
 {
@@ -48,7 +49,7 @@ int main(void)
 	CPeripherials::peripherialInit();
 
 
-  float gyroBuffer[3];
+	int16_t accBuffer[3];
   char printBuffer[40];
 
   sprintf(printBuffer,"MOVE");
@@ -56,19 +57,22 @@ int main(void)
   sprintf(printBuffer,"");
 
 
+//  BSP_LED_On(LED_GREEN);
 
-
-
+  sprintf(printBuffer,"Transmision start\n");
+  send(printBuffer);
   while (1)
   {
+//	  BSP_LED_Toggle(LED_RED);
 	  CFilter::update();
-	  sprintf(printBuffer,"%f ,",CFilter::getAccX());
-	  HAL_Delay(33);
+	  BSP_COMPASS_AccGetXYZ(accBuffer);
+	  sprintf(printBuffer,"X %.2f, %d",CFilter::getAccX(),accBuffer[0]);
+	  HAL_Delay(50);
 	  send(printBuffer);
-	  sprintf(printBuffer,"%f ,",CFilter::getAccY());
-	  HAL_Delay(33);
+	  sprintf(printBuffer,", Y %.2f, %d",CFilter::getAccY(),accBuffer[1]);
+	  HAL_Delay(50);
 	  send(printBuffer);
-	  sprintf(printBuffer,"%f ,",CFilter::getAccZ());
+	  sprintf(printBuffer,", Z %.2f, %d",CFilter::getAccZ(),accBuffer[2]);
 	  send(printBuffer);
 	  sprintf(printBuffer,"\n");
 	  send(printBuffer);

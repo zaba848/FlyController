@@ -70,31 +70,16 @@ void CFilter::init()
 
 }
 float CFilter::getAccX(void) {
-	return x_backupPosition.x;
+	return x_post.x;
 
 }
 
 float CFilter::getAccY(void) {
-	return x_backupPosition.y;
+	return x_post.y;
 }
 
 float CFilter::getAccZ(void) {
-	return x_backupPosition.z;
-}
-
-void CFilter::internalComputing()
-{
-
-	x_beforeComputing.x += x_post.x;
-	x_beforeComputing.y += x_post.y;
-	x_beforeComputing.z += x_post.z;
-
-	if(internalIterator >= NUBER_OF_SAMPLES)
-	{
-		x_backupPosition.x = x_beforeComputing.x / NUBER_OF_SAMPLES;
-		x_backupPosition.y = x_beforeComputing.y / NUBER_OF_SAMPLES;
-		x_backupPosition.z = x_beforeComputing.z / NUBER_OF_SAMPLES;
-	}
+	return x_post.z;
 }
 
 void CFilter::internalValueUpdate() {
@@ -127,7 +112,6 @@ void CFilter::update() {
 
 	internalValueUpdate();
 	mainAlgorithm();
-	internalComputing();
 
 }
 
