@@ -7,8 +7,6 @@
 
 
 #include <CFilter.h>
-#include <stm32l476g_discovery_compass.h>
-#include "stm32l476g_discovery_gyroscope.h"
 
 
 
@@ -24,11 +22,10 @@ CFilter::sensor_data_t CFilter::v_post;
 CFilter::sensor_data_t CFilter::x_backupPosition;
 CFilter::sensor_data_t CFilter::x_correction;
 
+int16_t CFilter::accBuffer [] = {0,0,0} ;
+
 uint8_t CFilter::internalIterator;
 float CFilter::dt;
-float  CFilter::gyroBuffer[] = {0,0,0} ;
-int16_t CFilter::accBuffer[] = {0,0,0} ;
-int16_t CFilter::magBuffer[] = {0,0,0} ;
 
 void CFilter::init()
 {
@@ -86,22 +83,28 @@ float CFilter::getAccZ(void) {
 
 void CFilter::calibration()
 {
-	 BSP_COMPASS_AccGetXYZ(accBuffer);
+//	 BSP_COMPASS_AccGetXYZ(accBuffer);
 
-	 x_correction.x = accBuffer[0];
-	 x_correction.y = accBuffer[1];
-	 x_correction.z = accBuffer[2];
+	 x_correction.x = CDriver::getACC_X();
+	 x_correction.y = CDriver::getACC_Y();
+	 x_correction.z = CDriver::getACC_Z();
+}
+
+void CFilter::resetCalibration()
+{
+	 x_correction.x = 0;
+	 x_correction.y = 0;
+	 x_correction.z = 0;
 }
 
 void CFilter::internalValueUpdate() {
 
-	BSP_COMPASS_AccGetXYZ(accBuffer);
-	accBuffer[0] = accBuffer[0] - x_correction.x;
-	accBuffer[1] = accBuffer[1] - x_correction.y;
-	accBuffer[2] = accBuffer[2] - x_correction.z;
 
-	BSP_COMPASS_MagGetXYZ(magBuffer);
-	BSP_GYRO_GetXYZ(gyroBuffer);
+
+	accBuffer[0] = CDriver::getACC_X() - x_correction.x;
+	accBuffer[1] = CDriver::getACC_Y() - x_correction.y;
+	accBuffer[2] = CDriver::getACC_Z() - x_correction.z;
+
 
 }
 

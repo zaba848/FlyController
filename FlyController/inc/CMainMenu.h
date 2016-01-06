@@ -33,7 +33,15 @@ protected:
 
 	char printBuffer[40];
 	CTimer timer;
+	CTimer readTimer;
+
 	void initComplet();
+
+private:
+	void execCalc(CJoy::JState state);
+	void resetCalibration(CJoy::JState state);
+	bool caneEnter(CJoy::JState state);
+	CJoy::JState joyState;
 };
 
 #endif /* CMAINMENU_H_ */

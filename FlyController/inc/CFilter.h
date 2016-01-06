@@ -9,6 +9,7 @@
 #define CFILTER_H_
 #include <stdint.h>
 #include <stdio.h>
+#include <CDriver.h>
 //#include <cstdint>
 
 class CFilter {
@@ -31,6 +32,7 @@ static const uint8_t NUBER_OF_SAMPLES = 3;
 	static void init();
 	static void update();
 	static void calibration();
+	static void resetCalibration();
 
 
 protected:
@@ -45,8 +47,7 @@ protected:
 
 	static float dt;
 	static int16_t accBuffer[3];
-	static float  gyroBuffer[3];
-	static int16_t magBuffer[3];
+
 
 	static void internalValueUpdate();
 	static void mainAlgorithm();

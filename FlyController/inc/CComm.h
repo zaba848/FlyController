@@ -13,6 +13,7 @@
 
 #include <CFilter.h>
 #include <CTimer.h>
+#include <CDriver.h>
 #include <usart.h>
 #include <stm32l476g_discovery_compass.h>
 
@@ -20,7 +21,8 @@
 class CComm {
 public:
 
-	static const uint8_t COMMUNICATION_DELAY = 50;
+	static const uint8_t COMMUNICATION_DELAY = 40;
+	static const uint8_t DIVIDED_BY	= 100;
 
 	static void init();
 	static void update();
@@ -30,8 +32,7 @@ protected:
 //	static const uint8_t INTERNAL_DELAY = 8;
 
 
-	static int16_t accBuffer[3];
-	static 	char printBuffer[100];
+	static 	char printBuffer[400];
 	static CTimer communicationTimer;
 
 };

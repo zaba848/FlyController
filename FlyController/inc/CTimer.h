@@ -12,9 +12,9 @@ public:
 	typedef enum
 	{
 		CT_MS  = 1,
-		CT_DCS = 10,
-		CT_SEC = 100,
-		CT_MIN = 6000,
+		CT_DCS = 100,
+		CT_SEC = 1000,
+		CT_MIN = 60000,
 	}CTime;
 
 	CTimer();
@@ -47,7 +47,7 @@ protected:
 private:
 
 	static uint32_t tick;
-	 uint32_t tickBackup;
+	static uint32_t tickBackup;
 
 };
 

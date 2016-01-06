@@ -6,10 +6,13 @@
 #include <stm32l4xx_hal.h>
 
 uint32_t CTimer::tick;
+uint32_t CTimer::tickBackup;
+
 
 void CTimer::initCTimer()
 {
 	tick = 0;
+	tickBackup = tick;
 
 }
 
@@ -94,13 +97,12 @@ void CTimer::setState(bool isEnable)
 
 void CTimer::resetTimer()
 {
+
 	this->timer.timeUp   = false;
 	this->timer.isEnable = true;
 	this->timer.time 	 = 0;
 	this->timer.interupt = interupt;
 	this->tickBackup	 = tick;
-
-
 
 }
 
