@@ -32,53 +32,12 @@
   */
 /* Includes ------------------------------------------------------------------*/
 
-#include <CFilter.h>
-#include <CPeripherials.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stm32l476g_discovery_compass.h>
-#include <stm32l476g_discovery_glass_lcd.h>
-#include <stm32l4xx_hal.h>
-#include <usart.h>
-
+#include <CMainMenu.h>
 //void SystemClock_Config(void);
 
 int main(void)
 {
-
-	CPeripherials::peripherialInit();
-
-
-	int16_t accBuffer[3];
-  char printBuffer[40];
-
-  sprintf(printBuffer,"MOVE");
-  BSP_LCD_GLASS_DisplayString((uint8_t*)printBuffer);
-  sprintf(printBuffer,"");
-
-
-//  BSP_LED_On(LED_GREEN);
-
-  sprintf(printBuffer,"Transmision start\n");
-  send(printBuffer);
-  while (1)
-  {
-//	  BSP_LED_Toggle(LED_RED);
-	  CFilter::update();
-	  BSP_COMPASS_AccGetXYZ(accBuffer);
-	  sprintf(printBuffer,"X %.2f, %d",CFilter::getAccX(),accBuffer[0]);
-	  HAL_Delay(50);
-	  send(printBuffer);
-	  sprintf(printBuffer,", Y %.2f, %d",CFilter::getAccY(),accBuffer[1]);
-	  HAL_Delay(50);
-	  send(printBuffer);
-	  sprintf(printBuffer,", Z %.2f, %d",CFilter::getAccZ(),accBuffer[2]);
-	  send(printBuffer);
-	  sprintf(printBuffer,"\n");
-	  send(printBuffer);
-	  HAL_Delay(330);
-
-
-  }
-
+	CMainMenu mainMenu;
+	mainMenu.init();
+	mainMenu.update();
 }

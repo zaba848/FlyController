@@ -24,6 +24,8 @@
 
 
 #include <CFilter.h>
+#include <CJoy.h>
+
 
 class CPeripherials {
 public:

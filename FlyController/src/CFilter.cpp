@@ -22,7 +22,7 @@ CFilter::sensor_data_t CFilter::v_pri;
 CFilter::sensor_data_t CFilter::v_post;
 
 CFilter::sensor_data_t CFilter::x_backupPosition;
-CFilter::sensor_data_t CFilter::x_beforeComputing;
+CFilter::sensor_data_t CFilter::x_correction;
 
 uint8_t CFilter::internalIterator;
 float CFilter::dt;
@@ -55,9 +55,7 @@ void CFilter::init()
 	 x_backupPosition.y = 0;
 	 x_backupPosition.z = 0;
 
-	 x_beforeComputing.x = 0;
-	 x_beforeComputing.y = 0;
-	 x_beforeComputing.z = 0;
+
 
 	 v_pri.x = 0;
 	 v_pri.y = 0;
@@ -67,6 +65,10 @@ void CFilter::init()
 	 v_post.y = 0;
 	 v_post.z = 0;
 
+
+	 x_correction.x = 0;
+	 x_correction.y = 0;
+	 x_correction.z = 0;
 
 }
 float CFilter::getAccX(void) {
@@ -82,9 +84,22 @@ float CFilter::getAccZ(void) {
 	return x_post.z;
 }
 
+void CFilter::calibration()
+{
+	 BSP_COMPASS_AccGetXYZ(accBuffer);
+
+	 x_correction.x = accBuffer[0];
+	 x_correction.y = accBuffer[1];
+	 x_correction.z = accBuffer[2];
+}
+
 void CFilter::internalValueUpdate() {
 
 	BSP_COMPASS_AccGetXYZ(accBuffer);
+	accBuffer[0] = accBuffer[0] - x_correction.x;
+	accBuffer[1] = accBuffer[1] - x_correction.y;
+	accBuffer[2] = accBuffer[2] - x_correction.z;
+
 	BSP_COMPASS_MagGetXYZ(magBuffer);
 	BSP_GYRO_GetXYZ(gyroBuffer);
 

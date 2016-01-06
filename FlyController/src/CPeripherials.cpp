@@ -25,6 +25,9 @@ void CPeripherials::peripherialInit() {
 	  gyroErr = BSP_GYRO_Init();
 	  accErr = BSP_COMPASS_Init();
 	  BSP_LCD_GLASS_Init();
+	  BSP_JOY_Init(JOY_MODE_GPIO);
+
+	  CJoy::init();
 	  CFilter::init();
 
 	  errorControll();

@@ -16,11 +16,11 @@ public:
 static const uint8_t NUBER_OF_SAMPLES = 3;
 
 
-	 struct sensor_data_t {
+	 typedef struct  {
 		float x;
 		float y;
 		float z;
-	} ;
+	} sensor_data_t;
 
 	static float getAccX(void);
 	static float getAccY(void);
@@ -30,6 +30,8 @@ static const uint8_t NUBER_OF_SAMPLES = 3;
 
 	static void init();
 	static void update();
+	static void calibration();
+
 
 protected:
 
@@ -53,7 +55,7 @@ protected:
 private:
 
 	static uint8_t internalIterator;
-	static sensor_data_t x_beforeComputing;
+	static sensor_data_t x_correction;
 
 
 
