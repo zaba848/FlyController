@@ -18,21 +18,30 @@ public:
 
 	static void    update	();
 
-	static uint16_t getACC_X ();
-	static uint16_t getACC_Y ();
-	static uint16_t getACC_Z ();
-	static uint16_t getACC   (uint8_t number);
+	static int16_t getACC_X ();
+	static int16_t getACC_Y ();
+	static int16_t getACC_Z ();
+	static int16_t getACC   (uint8_t number);
+
+	static void getACC_XD (double& x);
+	static void getACC_YD (double& y);
+	static void getACC_ZD (double& z);
 
 
-	static uint16_t getMAG_X ();
-	static uint16_t getMAG_Y ();
-	static uint16_t getMAG_Z ();
-	static uint16_t getMAG   (uint8_t number);
+	static int16_t getMAG_X ();
+	static int16_t getMAG_Y ();
+	static int16_t getMAG_Z ();
+	static int16_t getMAG   (uint8_t number);
 
 
 	static float   getGYRO_X();
 	static float   getGYRO_Y();
 	static float   getGYRO_Z();
+
+	static void   getGYRO_XD(double& x);
+	static void   getGYRO_YD(double& y);
+	static void   getGYRO_ZD(double& z);
+
 	static float   getGYRO  (uint8_t number);
 
 

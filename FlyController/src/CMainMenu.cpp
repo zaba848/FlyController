@@ -5,6 +5,7 @@
  *      Author: User
  */
 
+#include <CDriver.h>
 #include <CMainMenu.h>
 
 
@@ -19,8 +20,8 @@ void CMainMenu::init()
 
 	CPeripherials::peripherialInit();
 	CComm::init();
-	timer.reconfigure(1, CTimer::CT_SEC);
-	readTimer.reconfigure(100, CTimer::CT_MS);
+	timer.reconfigure(450, CTimer::CT_MS);
+	readTimer.reconfigure(350, CTimer::CT_MS);
 
 	initComplet();
 
@@ -65,6 +66,10 @@ void CMainMenu::execCalc(CJoy::JState state)
 {
 	if(caneEnter(state))
 	{
+	    BSP_LCD_GLASS_Clear();
+		  sprintf(printBuffer,"      MOVE AROUND, IF YOU DONE, USE JOY");
+
+	BSP_LCD_GLASS_ScrollSentence((uint8_t*)printBuffer,1 , SCROLL_SPEED_HIGH);
 	  CFilter::calibration();
 	  sprintf(printBuffer,"CALC   ");
 	    BSP_LCD_GLASS_DisplayString((uint8_t*)printBuffer);
@@ -95,9 +100,11 @@ void CMainMenu::update()
 	  readTimer.update();
 	  CComm::update();
 
-	  if(readTimer.timeUp())
+	  if(readTimer.timeUp(false))
+	  {
 		  CDriver::update();
 		  CFilter::update();
+	  }
 
 
 	  switch(CJoy::getState())

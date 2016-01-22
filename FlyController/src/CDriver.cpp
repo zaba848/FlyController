@@ -20,46 +20,60 @@ void    CDriver::update	  ()
 	BSP_GYRO_GetXYZ		 (gyroBuffer);
 }
 
-uint16_t CDriver::getACC_X ()
+int16_t CDriver::getACC_X ()
 {
 	return accBuffer[0];
 }
-uint16_t CDriver::getACC_Y ()
+int16_t CDriver::getACC_Y ()
 {
 	return accBuffer[1];
 
 }
-uint16_t CDriver::getACC_Z ()
+int16_t CDriver::getACC_Z ()
 {
 	return accBuffer[2];
-
 }
 
-uint16_t CDriver::getACC (uint8_t number)
+void CDriver::getACC_XD (double& x)
 {
-	if(number > 3)
+	x = (double)accBuffer[0];
+}
+void CDriver::getACC_YD (double& y)
+{
+	y = (double)accBuffer[1];
+
+}
+void CDriver::getACC_ZD (double& z)
+{
+	uint16_t a = accBuffer[2];
+	z = (double)a;
+}
+
+int16_t CDriver::getACC (uint8_t number)
+{
+	if(number < 3)
 	return accBuffer[number];
 	return 0;
 
 }
 
-uint16_t CDriver::getMAG_X ()
+int16_t CDriver::getMAG_X ()
 {
 	return magBuffer[0];
 }
-uint16_t CDriver::getMAG_Y ()
+int16_t CDriver::getMAG_Y ()
 {
 	return magBuffer[1];
 
 }
-uint16_t CDriver::getMAG_Z ()
+int16_t CDriver::getMAG_Z ()
 {
 	return magBuffer[2];
 
 }
-uint16_t CDriver::getMAG (uint8_t number)
+int16_t CDriver::getMAG (uint8_t number)
 {
-	if(number > 3)
+	if(number < 3)
 	return magBuffer[number];
 	return 0;
 
@@ -76,12 +90,27 @@ float   CDriver::getGYRO_Y()
 }
 float   CDriver::getGYRO_Z()
 {
-	return gyroBuffer[3];
+	return gyroBuffer[2];
+
+}
+
+void   CDriver::getGYRO_XD(double& x)
+{
+	x = (double)gyroBuffer[0];
+}
+void   CDriver::getGYRO_YD(double& y)
+{
+	y = (double)gyroBuffer[1];
+
+}
+void   CDriver::getGYRO_ZD(double& z)
+{
+	z = (double)gyroBuffer[2];
 
 }
 float CDriver::getGYRO    (uint8_t number)
 {
-	if(number > 3)
+	if(number < 3)
 	return gyroBuffer[number];
 	return 0;
 

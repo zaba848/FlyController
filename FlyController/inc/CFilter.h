@@ -17,7 +17,7 @@
 class CFilter {
 public:
 static const uint8_t NUBER_OF_SAMPLES = 3;
-static const float PI = 3.1415;
+static const float PI = 3.1415926535;//15;
 
 
 	 typedef struct  {
@@ -30,15 +30,27 @@ static const float PI = 3.1415;
 	static float getAccY(void);
 	static float getAccZ(void);
 
-
+//	static float rate_gyr_x;
+//	static float rate_gyr_y ;
+//	static float rate_gyr_z ;
+//
+//	static float CFangleX;
+//	static float CFangleY;
 
 	static void init();
-	static void update();
 	static void calibration();
+	static void update();
+//	static void calibration();
 	static void resetCalibration();
 
 
 protected:
+
+	typedef struct
+	{
+		int32_t min;
+		int32_t max;
+	}backup;
 
 	static sensor_data_t alfa;
 	static sensor_data_t beta;
@@ -50,10 +62,25 @@ protected:
 
 	static float dt;
 	static int16_t accBuffer[3];
-	static int16_t angle[3];
+	static float angle[3];
+// new one
+	static backup xCal;
+	static backup yCal;
+	static backup zCal;
 
-
-
+	static int16_t magBuffer[3];
+	static float heading;
+	static float Magx;
+	static float Magy;
+	static float Magz;
+	static float AccXnorm;
+	static float AccYnorm;
+	static float Xh;
+	static float Yh;
+	static float Pitch;
+	static float Roll;
+	static float Temp;
+//
 	static void internalValueUpdate();
 	static void mainAlgorithm();
 	static void getAngle();

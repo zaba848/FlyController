@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <CMainMenu.h>
 
 #include <CFilter.h>
 #include <CTimer.h>
@@ -21,7 +22,7 @@
 class CComm {
 public:
 
-	static const uint8_t COMMUNICATION_DELAY = 40;
+	static const uint16_t COMMUNICATION_DELAY = 500;
 	static const uint8_t DIVIDED_BY	= 1;
 
 	static void init();
